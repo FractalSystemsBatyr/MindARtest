@@ -10,22 +10,78 @@
 
 
     <script>
-      const showInfo = () => {
+
+      window.onload = function () {
+
+        let currentItem = 0;
+        const videoDisplay = document.querySelector("#videodisplay");
         const linkedinButton = document.querySelector("#linkedin-button");
         const instagramButton = document.querySelector("#instagram-button");
         const facebookButton = document.querySelector("#facebook-button");
         const youtubeButton = document.querySelector("#youtube-button");
+        var facadeVideo = document.querySelector('#facadevideo');
+        var spheresVideo = document.querySelector('#spheresvideo');
+        var wingsVideo = document.querySelector('#wingsvideo');
 
-        linkedinButton.setAttribute("visible", true);
-        setTimeout(() => {
-          instagramButton.setAttribute("visible", true);
-        }, 300);
-        setTimeout(() => {
-          facebookButton.setAttribute("visible", true);
-        }, 600);
-        setTimeout(() => {
-          youtubeButton.setAttribute("visible", true);
-        }, 900);
+        const changeVideo = (item) => {
+          facadeVideo.pause();
+          spheresVideo.pause();
+          wingsVideo.pause();
+          switch (item)
+          {
+            case 0:
+              videoDisplay.setAttribute("src", "#facadevideo");
+              break;
+            case 1:
+              videoDisplay.setAttribute("src", "#spheresvideo");
+              break;
+            case 2:
+              videoDisplay.setAttribute("src", "#wingsvideo");
+              break;
+            default:
+              break;
+          }
+        }
+
+        document.querySelector("#left-button")
+        .addEventListener('click', () => {
+          currentItem = (currentItem + 1) % 3;
+          //console.log(currentItem);
+          changeVideo(currentItem);
+        });
+        document.querySelector("#right-button")
+        .addEventListener('click', () => {
+          currentItem = (currentItem - 1 + 3) % 3;
+          //console.log(currentItem);
+          changeVideo(currentItem);
+        });
+
+        const pauseplayvideo = (video) =>{
+            if(video.paused){
+              video.play();
+            }
+            else{
+              video.pause();
+            }
+        }
+        
+        document.querySelector("#videodisplay")
+        .addEventListener('click', () => {
+          switch (currentItem)
+          {
+            case 0:
+              pauseplayvideo(facadeVideo);
+              break;
+            case 1:
+              pauseplayvideo(spheresVideo);
+              break;
+            case 2:
+              pauseplayvideo(wingsVideo);
+              break;
+            default:
+              break;
+          }
+        });
 
         linkedinButton.addEventListener('click', function (evt) {
           //console.log("linkedinButton");
@@ -43,6 +99,35 @@
           //console.log("youtubeButton");
           window.open('https://www.youtube.com/channel/UCNdG1R9fRmJ6fod-vo5_Wig','_blank');
         });
+
+      };
+
+      const showInfo = () => {
+        const linkedinButton = document.querySelector("#linkedin-button");
+        const instagramButton = document.querySelector("#instagram-button");
+        const facebookButton = document.querySelector("#facebook-button");
+        const youtubeButton = document.querySelector("#youtube-button");
+        
+        const leftButton = document.querySelector("#left-button");
+        const rightButton = document.querySelector("#right-button");
+
+        linkedinButton.setAttribute("visible", true);
+        setTimeout(() => {
+          instagramButton.setAttribute("visible", true);
+        }, 300);
+        setTimeout(() => {
+          facebookButton.setAttribute("visible", true);
+        }, 600);
+        setTimeout(() => {
+          youtubeButton.setAttribute("visible", true);
+        }, 900);
+
+        setTimeout(() => {
+          leftButton.setAttribute("visible", true);
+        }, 900);
+        setTimeout(() => {
+          rightButton.setAttribute("visible", true);
+        }, 900);
       }
 
       const showAvatar = () => {
@@ -70,20 +155,6 @@
         }
       });
 
-      AFRAME.registerComponent('play-pause', {
-        init: function () {
-          var myVideo = document.querySelector('#facadevideo');
-          this.el.addEventListener('click', function () {
-            if(myVideo.paused) {
-                myVideo.play();
-            }
-            else{
-                myVideo.pause();
-            }
-          }
-          );
-        }
-      });
     </script>
 
 
@@ -99,7 +170,12 @@
             <img id="icon-facebook" src="./icons/facebook.png" />
             <img id="icon-youtube" src="./icons/youtube.png" />
 
+            <img id="icon-left" src="./icons/left.png" />
+            <img id="icon-right" src="./icons/right.png" />
+
             <video id="facadevideo" src="./videos/facade.webm" loop="true"></video>
+            <video id="spheresvideo" src="./videos/spheres.webm" loop="true"></video>
+            <video id="wingsvideo" src="./videos/wings.webm" loop="true"></video>
 
         </a-assets>
 
@@ -107,7 +183,10 @@
       
       <a-entity mindar-image-target="targetIndex: 1" mytarget>
 
-          <a-video width="1" height="0.5625" src="#facadevideo" play-pause class="clickable"></a-video>
+          <a-video id="videodisplay" width="1" height="0.5625" src="#facadevideo" play-pause class="clickable"></a-video>
+
+          <a-image visible=false id="left-button" class="clickable" src="#icon-left" position="-0.7 0 0" height="0.15" width="0.15"></a-image>
+          <a-image visible=false id="right-button" class="clickable" src="#icon-right" position="0.7 0 0" height="0.15" width="0.15"></a-image>
 
           <a-image visible=false id="linkedin-button" class="clickable" src="#icon-linkedin" position="-0.42 -0.5 0" height="0.15" width="0.15"
             animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
