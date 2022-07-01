@@ -2,21 +2,131 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    <link rel="shortcut icon" href="#">
+
+
+    <script>
+      const showInfo = () => {
+        const linkedinButton = document.querySelector("#linkedin-button");
+        const instagramButton = document.querySelector("#instagram-button");
+        const facebookButton = document.querySelector("#facebook-button");
+        const youtubeButton = document.querySelector("#youtube-button");
+
+        linkedinButton.setAttribute("visible", true);
+        setTimeout(() => {
+          instagramButton.setAttribute("visible", true);
+        }, 300);
+        setTimeout(() => {
+          facebookButton.setAttribute("visible", true);
+        }, 600);
+        setTimeout(() => {
+          youtubeButton.setAttribute("visible", true);
+        }, 900);
+
+        linkedinButton.addEventListener('click', function (evt) {
+          //console.log("linkedinButton");
+          window.open('https://www.linkedin.com/company/fractal-systems','_blank');
+        });
+        instagramButton.addEventListener('click', function (evt) {
+          //console.log("instagramButton");
+          window.open('https://www.instagram.com/fractalsystemsuae','_blank');
+        });
+        facebookButton.addEventListener('click', function (evt) {
+          //console.log("facebookButton");
+          window.open('https://www.facebook.com/FractalSystems','_blank');
+        });
+        youtubeButton.addEventListener('click', function (evt) {
+          //console.log("youtubeButton");
+          window.open('https://www.youtube.com/channel/UCNdG1R9fRmJ6fod-vo5_Wig','_blank');
+        });
+      }
+
+      const showAvatar = () => {
+        const logo = document.querySelector("#logo");
+        let y = -0.3;
+        const id = setInterval(() => {
+          y += 0.02;
+          if (y >= 0.3) {
+            clearInterval(id);
+          }
+          logo.setAttribute("position", "0 " + y + " 0");
+        }, 5);
+      }
+
+      AFRAME.registerComponent('mytarget', {
+        init: function () {
+          this.el.addEventListener('targetFound', event => {
+            console.log("target found");
+            showAvatar();
+            showInfo();
+          });
+          this.el.addEventListener('targetLost', event => {
+            console.log("target lost");
+          });
+        }
+      });
+
+      AFRAME.registerComponent('play-pause', {
+        init: function () {
+          var myVideo = document.querySelector('#facadevideo');
+          this.el.addEventListener('click', function () {
+            if(myVideo.paused) {
+                myVideo.play();
+            }
+            else{
+                myVideo.pause();
+            }
+          }
+          );
+        }
+      });
+    </script>
+
+
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: ./targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-assets>
-            <a-asset-item id="avatarModel" src="./asset.glb"></a-asset-item>
+            <a-asset-item id="logoModel" src="./asset.glb"></a-asset-item>
+
+            <img id="icon-linkedin" src="./icons/linkedin.png" />
+            <img id="icon-instagram" src="./icons/instagram.png" />
+            <img id="icon-facebook" src="./icons/facebook.png" />
+            <img id="icon-youtube" src="./icons/youtube.png" />
+
+            <video id="facadevideo" src="./videos/facade.webm" loop="true"></video>
+
         </a-assets>
 
-      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;" raycaster="far: 10000; objects: .clickable"></a-camera>
       
-      <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0 " position="0 -0.2 0" scale="1 1 1" src="#avatarModel">
+      <a-entity mindar-image-target="targetIndex: 1" mytarget>
+
+          <a-video width="1" height="0.5625" src="#facadevideo" play-pause class="clickable"></a-video>
+
+          <a-image visible=false id="linkedin-button" class="clickable" src="#icon-linkedin" position="-0.42 -0.5 0" height="0.15" width="0.15"
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+          ></a-image>
+
+          <a-image visible=false id="instagram-button" class="clickable" src="#icon-instagram" position="-0.14 -0.5 0" height="0.15" width="0.15"
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+          ></a-image>
+
+          <a-image visible=false id="facebook-button" class="clickable" src="#icon-facebook"  position="0.14 -0.5 0" height="0.15" width="0.15"
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+          ></a-image>
+
+          <a-image visible=false id="youtube-button" class="clickable" src="#icon-youtube" position="0.42 -0.5 0" height="0.15" width="0.15"
+            animation="property: scale; to: 1.2 1.2 1.2; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate"
+          ></a-image>
+
+        <a-gltf-model id="logo" rotation="0 0 0" position="0 -0.2 0" scale="1 1 1" src="#logoModel"></a-gltf-model>
+
       </a-entity>
 
     </a-scene>
