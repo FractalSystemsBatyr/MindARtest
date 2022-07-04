@@ -180,9 +180,9 @@
             <img id="icon-left" src="./icons/left.png" />
             <img id="icon-right" src="./icons/right.png" />
 
-            <video id="facadevideo" src="./videos/facade.webm#t=0.5" loop="true"></video>
-            <video id="spheresvideo" src="./videos/spheres.webm#t=0.5" loop="true"></video>
-            <video id="wingsvideo" src="./videos/wings.webm#t=0.5" loop="true"></video>
+            <video id="facadevideo" src="./videos/facade.webm#t=0.5" loop="true" crossorigin="anonymous" muted playsinline webkit-playsinline></video>
+            <video id="spheresvideo" src="./videos/spheres.webm#t=0.5" loop="true" crossorigin="anonymous" muted playsinline webkit-playsinline></video>
+            <video id="wingsvideo" src="./videos/wings.webm#t=0.5" loop="true" crossorigin="anonymous" muted playsinline webkit-playsinline></video>
 
         </a-assets>
 
@@ -190,7 +190,7 @@
       
       <a-entity mindar-image-target="targetIndex: 1" mytarget>
 
-          <a-video id="videodisplay" width="1" height="0.5625" src="#facadevideo" muted playsinline></a-video>
+          <a-video id="videodisplay" width="1" height="0.5625" src="#facadevideo"></a-video>
 
           <a-image visible=false id="playpause-button" class="clickable" src="#icon-playpause" position="0 -0.3 0.05" height="0.15" width="0.15"></a-image>
 
