@@ -65,7 +65,7 @@
             }
         }
         
-        document.querySelector("#videodisplay")
+        document.querySelector("#playpause-button")
         .addEventListener('click', () => {
           switch (currentItem)
           {
@@ -108,6 +108,8 @@
         const facebookButton = document.querySelector("#facebook-button");
         const youtubeButton = document.querySelector("#youtube-button");
         
+        const playpauseButton = document.querySelector("#playpause-button");
+        
         const leftButton = document.querySelector("#left-button");
         const rightButton = document.querySelector("#right-button");
 
@@ -127,6 +129,9 @@
         }, 900);
         setTimeout(() => {
           rightButton.setAttribute("visible", true);
+        }, 900);
+        setTimeout(() => {
+          playpauseButton.setAttribute("visible", true);
         }, 900);
       }
 
@@ -160,7 +165,7 @@
 
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="imageTargetSrc: ./targets.mind;" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
 
         <a-assets>
             <a-asset-item id="logoModel" src="./asset.glb"></a-asset-item>
@@ -169,13 +174,15 @@
             <img id="icon-instagram" src="./icons/instagram.png" />
             <img id="icon-facebook" src="./icons/facebook.png" />
             <img id="icon-youtube" src="./icons/youtube.png" />
+            
+            <img id="icon-playpause" src="./icons/playpause.png" />
 
             <img id="icon-left" src="./icons/left.png" />
             <img id="icon-right" src="./icons/right.png" />
 
-            <video id="facadevideo" src="./videos/facade.webm" loop="true"></video>
-            <video id="spheresvideo" src="./videos/spheres.webm" loop="true"></video>
-            <video id="wingsvideo" src="./videos/wings.webm" loop="true"></video>
+            <video id="facadevideo" src="./videos/facade.webm#t=0.5" loop="true"></video>
+            <video id="spheresvideo" src="./videos/spheres.webm#t=0.5" loop="true"></video>
+            <video id="wingsvideo" src="./videos/wings.webm#t=0.5" loop="true"></video>
 
         </a-assets>
 
@@ -183,7 +190,9 @@
       
       <a-entity mindar-image-target="targetIndex: 1" mytarget>
 
-          <a-video id="videodisplay" width="1" height="0.5625" src="#facadevideo" play-pause class="clickable"></a-video>
+          <a-video id="videodisplay" width="1" height="0.5625" src="#facadevideo"></a-video>
+
+          <a-image visible=false id="playpause-button" class="clickable" src="#icon-playpause" position="0 -0.3 0.05" height="0.15" width="0.15"></a-image>
 
           <a-image visible=false id="left-button" class="clickable" src="#icon-left" position="-0.7 0 0" height="0.15" width="0.15"></a-image>
           <a-image visible=false id="right-button" class="clickable" src="#icon-right" position="0.7 0 0" height="0.15" width="0.15"></a-image>
